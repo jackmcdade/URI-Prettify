@@ -10,7 +10,7 @@
    Do whatever you want with this plugin. It's probably
    one of the smallest in history.
    ========================================================
-   File: pi.jm.uri_prettify.php
+   File: pi.uri_prettify.php
    --------------------------------------------------------
    Purpose: Rewrites URI segments as Pretty Titles. E.g.:
    "street_photography" becomes "Street Photography". 
@@ -74,9 +74,6 @@ Class Uri_prettify
 	//  Plugin Usage
 	// ----------------------------------------
 
-	// This function describes how the plugin is used.
-	//  Make sure and use output buffering
-
 	function usage()
 	{
 	ob_start(); 
@@ -114,8 +111,6 @@ Class Uri_prettify
 
 	return $buffer;
 	}
-	// END
 
 }
-// END Class
 ?>
