@@ -1,0 +1,25 @@
+Wrap anything you want to be processed between the tag pairs. Useful for {segment} variables, filenames, and other "_" and "-" separated strings.
+
+{exp:uri_prettify}
+
+text you want processed
+
+{/exp:uri_prettify}
+
+Example: today_i_win_the_game
+Results: Today I Win the Game
+
+
+Parameters: 
+
+===============================================================
+
+uncap_keywords="yes" (defaults to "no")
+
+This tag will uncapitalized certain words for proper grammar's sake. E.g. articles, prepositions and coordinate conjunctions. Will keep them capitalized if they're at the start of a sentence (not prefaced with a space). Default keywords are: "and", "to", "with", "for", "the" and "or".
+
+===============================================================
+
+keywords="word1|word2|word3"
+
+Override the default list of words with your own. Words must be separated by pipe ("|") delimiters.
