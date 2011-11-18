@@ -24,7 +24,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'URI Prettify',
-	'pi_version'		=> '1.0',
+	'pi_version'		=> '1.1',
 	'pi_author'			=> 'Jack McDade',
 	'pi_author_url'		=> 'http://jackmcdade.com/',
 	'pi_description'	=> 'Turns URI segments or similarly delimited strings into Pretty Titles',
@@ -41,30 +41,38 @@ Class Uri_prettify
 		$this->EE =& get_instance();
 		
 		$keywords = explode("|", $this->EE->TMPL->fetch_param('keywords', 'and|to|with|for|the|or'));
+		$case = $this->EE->TMPL->fetch_param('case', 'title');
 
 		$lowered = array();
 		foreach ($keywords as $keyword)
-		{
 			$lowered[] = ucwords(strtolower($keyword));
-		}
 		
 		$keywords = $lowered;
 
 		$str = $this->EE->TMPL->tagdata;
+
 		$str = str_replace('_', ' ', $str);
 		$str = str_replace('-', ' ', $str);
 		$str = trim($str);
-		$str = ucwords(strtolower($str));
 		
-		// Don't capitalize articles, prepositions and 
-		// coordinate conjunctions unless they're the first word 	
-		if ($this->EE->TMPL->fetch_param('uncap_keywords', FALSE) !== FALSE)
+		if ($case == 'sentence')
 		{
-			foreach ($keywords as $keyword)
+			$str = ucfirst(strtolower($str));
+		}
+		else
+		{
+			$str = ucwords(strtolower($str));
+			// Don't capitalize articles, prepositions and 
+			// coordinate conjunctions unless they're the first word 	
+			if ($this->EE->TMPL->fetch_param('uncap_keywords', FALSE) !== FALSE)
 			{
-				$str = str_replace(' '.$keyword, ' '.strtolower($keyword), $str);
+				foreach ($keywords as $keyword)
+				{
+					$str = str_replace(' '.$keyword, ' '.strtolower($keyword), $str);
+				}
 			}
 		}
+		
 		$this->return_data = $str;
 
 	}
@@ -95,8 +103,10 @@ Class Uri_prettify
 	===============================================================
 	
 	uncap_keywords="yes" (defaults to "no")
+	Uncapitalized certain words for proper grammar's sake. E.g. articles, prepositions and coordinate conjunctions. Will keep them capitalized if they're at the start of a sentence (not prefaced with a space). Default keywords are: "and", "to", "with", "for", "the" and "or".
 	
-	This tag will uncapitalized certain words for proper grammar's sake. E.g. articles, prepositions and coordinate conjunctions. Will keep them capitalized if they're at the start of a sentence (not prefaced with a space). Default keywords are: "and", "to", "with", "for", "the" and "or".
+	case="title|sentence" (defaults to "sentence")
+	Would you like Title case (all words) or Sentence case (only first word)? Your choice.
 
 	===============================================================
 	

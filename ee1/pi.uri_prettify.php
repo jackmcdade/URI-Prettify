@@ -24,7 +24,7 @@
 
 $plugin_info = array(
 						'pi_name'			=> 'URI Prettify',
-						'pi_version'		=> '1.0',
+						'pi_version'		=> '1.1',
 						'pi_author'			=> 'Jack McDade',
 						'pi_author_url'		=> 'http://jackmcdade.com/',
 						'pi_description'	=> 'Turns URI segments or similarly delimited strings into Pretty Titles',
@@ -52,6 +52,8 @@ Class Uri_prettify
 		$keywords = $TMPL->fetch_param('keywords');
 		$keywords = $keywords ? $keywords : $default_keywords;
 		
+		$case = $TMPL->fetch_param('case');
+		
 		$keywords = explode("|", $keywords);
 
 		foreach ($keywords as $keyword)
@@ -65,15 +67,24 @@ Class Uri_prettify
 		$str = str_replace('_', ' ', $str);
 		$str = str_replace('-', ' ', $str);
 		$str = trim($str);
-		$str = ucwords(strtolower($str));
 		
-		// Don't capitalize articles, prepositions and 
-		// coordinate conjunctions unless they're the first word 	
-		if ($uncap_keywords != "no")
+		if ($case == 'sentence')
 		{
-			foreach ($keywords as $keyword)
+			$str = ucfirst(strtolower($str));
+		}
+		else
+		{
+		
+			$str = ucwords(strtolower($str));
+		
+			// Don't capitalize articles, prepositions and 
+			// coordinate conjunctions unless they're the first word 	
+			if ($uncap_keywords != "no")
 			{
-				$str = str_replace(' '.$keyword, ' '.strtolower($keyword), $str);
+				foreach ($keywords as $keyword)
+				{
+					$str = str_replace(' '.$keyword, ' '.strtolower($keyword), $str);
+				}
 			}
 		}
 		$this->return_data = $str;
@@ -113,9 +124,11 @@ Class Uri_prettify
 	===============================================================
 	
 	uncap_keywords="yes" (defaults to "no")
+	Uncapitalized certain words for proper grammar's sake. E.g. articles, prepositions and coordinate conjunctions. Will keep them capitalized if they're at the start of a sentence (not prefaced with a space). Default keywords are: "and", "to", "with", "for", "the" and "or".
 	
-	This tag will uncapitalized certain words for proper grammar's sake. E.g. articles, prepositions and coordinate conjunctions. Will keep them capitalized if they're at the start of a sentence (not prefaced with a space). Default keywords are: "and", "to", "with", "for", "the" and "or".
-
+	case="title|sentence" (defaults to "sentence")
+	Would you like Title case (all words) or Sentence case (only first word)? Your choice.
+	
 	===============================================================
 	
 	keywords="word1|word2|word3"
