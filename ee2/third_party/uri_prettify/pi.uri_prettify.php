@@ -24,7 +24,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'URI Prettify',
-	'pi_version'		=> '1.1',
+	'pi_version'		=> '1.2',
 	'pi_author'			=> 'Jack McDade',
 	'pi_author_url'		=> 'http://jackmcdade.com/',
 	'pi_description'	=> 'Turns URI segments or similarly delimited strings into Pretty Titles',
@@ -40,7 +40,8 @@ Class Uri_prettify
 		
 		$this->EE =& get_instance();
 		
-		$keywords = explode("|", $this->EE->TMPL->fetch_param('keywords', 'and|to|with|for|the|or'));
+		$default_keywords = 'a|an|the|to|and|as|but|for|if|nor|once|or|so|than|that|till|when|yet|at|by|down|for|from|in|into|like|near|of|off|on|onto|over|past|to|upon|with|is';
+		$keywords = explode("|", $this->EE->TMPL->fetch_param('keywords', $default_keywords));
 		$case = $this->EE->TMPL->fetch_param('case', 'title');
 
 		$lowered = array();
@@ -105,7 +106,7 @@ Class Uri_prettify
 	uncap_keywords="yes" (defaults to "no")
 	Uncapitalized certain words for proper grammar's sake. E.g. articles, prepositions and coordinate conjunctions. Will keep them capitalized if they're at the start of a sentence (not prefaced with a space). Default keywords are: "and", "to", "with", "for", "the" and "or".
 	
-	case="title|sentence" (defaults to "sentence")
+	case="title|sentence" (defaults to "title")
 	Would you like Title case (all words) or Sentence case (only first word)? Your choice.
 
 	===============================================================
